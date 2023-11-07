@@ -1,0 +1,23 @@
+# Veeam 12 Notes #
+
+Veeam backups put a high load on Object storage, so a proper design is required.
+
+Be careful especially about the size of a bucket, and when possible prefer to use multiple smaller buckets.
+
+For primary backups we found so far that a bucket size of around 250 TB is a good choice, for multiple reasons:
+
+amount of stored objects (and thus metadata)
+amount of API calls
+throughput
+
+
+Do not configure any tiering or lifecycle rules on object storage buckets used for Veeam Object Storage Repositories
+
+
+IMPORTANT
+
+You can not keep backups created by file backup jobs in object storage repositories if they are added as performance extents of the scale-out backup repository.
+
+
+Use one bucket per scale-out backup repository to reduce metadata. Creating folders for multiple scale-out backup repositories within a bucket slows down processing, as metadata operations within the object storage are handled per bucket.
+
